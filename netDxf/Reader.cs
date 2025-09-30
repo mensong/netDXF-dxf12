@@ -495,6 +495,13 @@ namespace netDxf
                         break;
                 }
             }
+
+            //在MText时，由于R12版本是没有MText的，所以在保存MText到R12时会变为一个块
+            //而这个块会被定义为一个隐藏块（前面加*），但是在保存后会在AutoCAD中打不开，
+            //所以这里需要把前面的*删除
+            if (name.StartsWith("*"))
+                name = name.Substring(1);
+
             Block block = new Block(name)
                               {
                                   BasePoint = basePoint,
@@ -2951,6 +2958,12 @@ namespace netDxf
 
         private Block GetBlock(string name)
         {
+            //在MText时，由于R12版本是没有MText的，所以在保存MText到R12时会变为一个块
+            //而这个块会被定义为一个隐藏块（前面加*），但是在保存后会在AutoCAD中打不开，
+            //所以这里需要把前面的*删除
+            if (name.StartsWith("*"))
+                name = name.Substring(1);
+
             if (this.blocks.ContainsKey(name))
             {
                 return this.blocks[name];
