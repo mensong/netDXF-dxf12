@@ -208,7 +208,7 @@ namespace netDxf
             try
             {
                 this.input = File.OpenRead(this.file);
-                this.reader = new StreamReader(this.input, Encoding.ASCII);
+                this.reader = new StreamReader(this.input, Encoding.Default);
                 this.isFileOpen = true;
             }
             catch (Exception ex)

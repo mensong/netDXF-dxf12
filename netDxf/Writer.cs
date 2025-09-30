@@ -109,7 +109,7 @@ namespace netDxf
             try
             {
                 this.output = File.Create(this.file);
-                this.writer = new StreamWriter(this.output, Encoding.ASCII);
+                this.writer = new StreamWriter(this.output, Encoding.Default);
                 this.isFileOpen = true;
             }
             catch (Exception ex)
