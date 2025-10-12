@@ -457,7 +457,7 @@ namespace netDxf
         /// <returns>A string text.</returns>
         public override string ToString()
         {
-            return string.Format("{0};{1}", this.x, this.y);
+            return string.Format("{0},{1}", this.x, this.y);
         }
 
         /// <summary>
@@ -467,7 +467,7 @@ namespace netDxf
         /// <returns>A string text.</returns>
         public string ToString(IFormatProvider provider)
         {
-            return string.Format("{0};{1}", this.x.ToString(provider), this.y.ToString(provider));
+            return string.Format("{0},{1}", this.x.ToString(provider), this.y.ToString(provider));
         }
 
         #endregion

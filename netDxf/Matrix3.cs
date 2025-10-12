@@ -299,9 +299,9 @@ namespace netDxf
         public override string ToString()
         {
             StringBuilder s = new StringBuilder();
-            s.Append(string.Format("|{0};{1};{2}|" + Environment.NewLine, this.mM11, this.mM12, this.mM13));
-            s.Append(string.Format("|{0};{1};{2}|" + Environment.NewLine, this.mM21, this.mM22, this.mM23));
-            s.Append(string.Format("|{0};{1};{2}|" + Environment.NewLine, this.mM31, this.mM32, this.mM33));
+            s.Append(string.Format("|{0},{1},{2}|" + Environment.NewLine, this.mM11, this.mM12, this.mM13));
+            s.Append(string.Format("|{0},{1},{2}|" + Environment.NewLine, this.mM21, this.mM22, this.mM23));
+            s.Append(string.Format("|{0},{1},{2}|" + Environment.NewLine, this.mM31, this.mM32, this.mM33));
 
             return s.ToString();
         }
@@ -314,9 +314,9 @@ namespace netDxf
         public string ToString(IFormatProvider provider)
         {
             StringBuilder s = new StringBuilder();
-            s.Append(string.Format("|{0};{1};{2}|" + Environment.NewLine, this.mM11.ToString(provider), this.mM12.ToString(provider), this.mM13.ToString(provider)));
-            s.Append(string.Format("|{0};{1};{2}|" + Environment.NewLine, this.mM21.ToString(provider), this.mM22.ToString(provider), this.mM23.ToString(provider)));
-            s.Append(string.Format("|{0};{1};{2}|" + Environment.NewLine, this.mM31.ToString(provider), this.mM32.ToString(provider), this.mM33.ToString(provider)));
+            s.Append(string.Format("|{0},{1},{2}|" + Environment.NewLine, this.mM11.ToString(provider), this.mM12.ToString(provider), this.mM13.ToString(provider)));
+            s.Append(string.Format("|{0},{1},{2}|" + Environment.NewLine, this.mM21.ToString(provider), this.mM22.ToString(provider), this.mM23.ToString(provider)));
+            s.Append(string.Format("|{0},{1},{2}|" + Environment.NewLine, this.mM31.ToString(provider), this.mM32.ToString(provider), this.mM33.ToString(provider)));
 
             return s.ToString();
         }

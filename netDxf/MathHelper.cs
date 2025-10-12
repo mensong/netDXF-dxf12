@@ -294,5 +294,118 @@ namespace netDxf
 
             return new Matrix3(aX.X, aY.X, zAxis.X, aX.Y, aY.Y, zAxis.Y, aX.Z, aY.Z, zAxis.Z);
         }
+
+        /// <summary>
+        /// Rotate a point around a base point
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <param name="angle"></param>
+        /// <param name="basePoint"></param>
+        /// <returns></returns>
+        public static Vector2 Rotation2d(Vector2 pt, double angle, Vector2 basePoint)
+        {
+            pt.X -= basePoint.X;
+            pt.Y -= basePoint.Y;
+
+            Vector2 newPoint = new Vector2();
+            newPoint.X = pt.X * Math.Cos(angle) - pt.Y * Math.Sin(angle);
+            newPoint.Y = pt.X * Math.Sin(angle) - pt.Y * Math.Cos(angle);
+
+            newPoint.X += basePoint.X;
+            newPoint.Y += basePoint.Y;
+            return newPoint;
+        }
+
+        /// <summary>
+        /// Rotate a point around a base point
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <param name="angle"></param>
+        /// <param name="basePoint"></param>
+        /// <returns></returns>
+        public static Vector3 Rotation2d(Vector3 pt, double angle, Vector3 basePoint)
+        {
+            pt.X -= basePoint.X;
+            pt.Y -= basePoint.Y;
+            pt.Z -= basePoint.Z;
+
+            Vector3 newPoint = new Vector3();
+            newPoint.X = pt.X * Math.Cos(angle) - pt.Y * Math.Sin(angle);
+            newPoint.Y = pt.X * Math.Sin(angle) + pt.Y * Math.Cos(angle);
+            newPoint.Z = pt.Z;
+
+            newPoint.X += basePoint.X;
+            newPoint.Y += basePoint.Y;
+            newPoint.Z += basePoint.Z;
+            return newPoint;
+        }
+
+        /// <summary>
+        /// Scale a point from a base point
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <param name="scale"></param>
+        /// <param name="basePoint"></param>
+        /// <returns></returns>
+        public static Vector2 Scale2d(Vector2 pt, Vector2 scale, Vector2 basePoint)
+        {
+            pt.X -= basePoint.X;
+            pt.Y -= basePoint.Y;
+
+            Vector2 newPoint = new Vector2();
+            newPoint.X = pt.X * scale.X;
+            newPoint.Y = pt.X * scale.Y;
+
+            newPoint.X += basePoint.X;
+            newPoint.Y += basePoint.Y;
+
+            return newPoint;
+        }
+
+        /// <summary>
+        /// Scale a point from a base point
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <param name="scale"></param>
+        /// <param name="basePoint"></param>
+        /// <returns></returns>
+        public static Vector3 Scale2d(Vector3 pt, Vector3 scale, Vector3 basePoint)
+        {
+            pt.X -= basePoint.X;
+            pt.Y -= basePoint.Y;
+            pt.Z -= basePoint.Z;
+
+            Vector3 newPoint = new Vector3();
+            newPoint.X = pt.X * scale.X;
+            newPoint.Y = pt.X * scale.Y;
+            newPoint.Z = pt.Z * scale.Z;
+
+            newPoint.X += basePoint.X;
+            newPoint.Y += basePoint.Y;
+            newPoint.Z += basePoint.Z;
+
+            return newPoint;
+        }
+
+        /// <summary>
+        /// Translate a point
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <param name="translate"></param>
+        /// <returns></returns>
+        public static Vector2 Translate2d(Vector2 pt, Vector2 translate)
+        {
+            return new Vector2(pt.X + translate.X, pt.Y + translate.Y);
+        }
+        /// <summary>
+        /// Translate a point
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <param name="translate"></param>
+        /// <returns></returns>
+        public static Vector3 Translate2d(Vector3 pt, Vector3 translate)
+        {
+            return new Vector3(pt.X + translate.X, pt.Y + translate.Y, pt.Z + translate.Z);
+        }
     }
 }

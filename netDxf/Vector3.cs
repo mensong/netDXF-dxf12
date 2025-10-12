@@ -489,7 +489,7 @@ namespace netDxf
         /// <returns>A string text.</returns>
         public override string ToString()
         {
-            return string.Format("{0};{1};{2}", this.x, this.y, this.z);
+            return string.Format("{0},{1},{2}", this.x, this.y, this.z);
         }
 
         /// <summary>
@@ -499,7 +499,7 @@ namespace netDxf
         /// <returns>A string text.</returns>
         public string ToString(IFormatProvider provider)
         {
-            return string.Format("{0};{1};{2}", this.x.ToString(provider), this.y.ToString(provider), this.z.ToString(provider));
+            return string.Format("{0},{1},{2}", this.x.ToString(provider), this.y.ToString(provider), this.z.ToString(provider));
         }
 
         #endregion

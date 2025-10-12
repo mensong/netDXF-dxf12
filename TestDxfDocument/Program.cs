@@ -28,6 +28,7 @@ using netDxf.Blocks;
 using netDxf.Entities;
 using netDxf.Header;
 using netDxf.Tables;
+using netDxf.Utils;
 
 namespace TestDxfDocument
 {
@@ -38,6 +39,15 @@ namespace TestDxfDocument
     {
         private static void Main()
         {
+            DxfDocument dxf = new DxfDocument();
+            dxf.Load("D:\\Users\\lims62.CN\\Desktop\\Drawing1.dxf");
+            foreach (var item in dxf.Texts)
+            {
+                BoundingBox.GetEntityExtends(item);
+            }
+            dxf.Save("D:\\Users\\lims62.CN\\Desktop\\Drawing1_1.dxf", DxfVersion.AutoCad12);
+            return;
+
             LineWidth();
             HatchCircleBoundary();
 
