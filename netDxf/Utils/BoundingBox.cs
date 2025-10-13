@@ -174,9 +174,10 @@ namespace netDxf.Utils
                         v3 = new Vector3(v1.X + textWidth, v1.Y + text.Height, 0);
                         v4 = new Vector3(v1.X + textWidth, v1.Y, 0);
 
-                        v2 = MathHelper.Rotation2d(v2, text.Rotation, v1);
-                        v3 = MathHelper.Rotation2d(v3, text.Rotation, v1);
-                        v4 = MathHelper.Rotation2d(v4, text.Rotation, v1);
+                        double angle = text.Rotation * MathHelper.DegToRad;
+                        v2 = MathHelper.Rotation2d(v2, angle, v1);
+                        v3 = MathHelper.Rotation2d(v3, angle, v1);
+                        v4 = MathHelper.Rotation2d(v4, angle, v1);
 
                         Extends extends = new Extends();
                         extends.AddPoint(v1);
@@ -221,27 +222,41 @@ namespace netDxf.Utils
                     if (insert != null)
                     {
                         Extends extends = new Extends();
-                        insert.Block.Entities
-                            .ForEach(e =>
+                        insert.Block.Entities.ForEach(e =>
+                        {
+                            Extends ext = GetEntityExtends(e);
+                            if (ext != null)
                             {
-                                Extends ext = GetEntityExtends(e);
-                                if (ext != null)
-                                {
-                                    ext.MinPoint = MathHelper.Rotation2d(
-                                        MathHelper.Scale2d(ext.MinPoint, insert.Scale, insert.InsertionPoint), 
-                                        insert.Rotation, 
-                                        insert.InsertionPoint) + insert.InsertionPoint;
-                                    ext.MaxPoint = MathHelper.Rotation2d(
-                                        MathHelper.Scale2d(ext.MaxPoint, insert.Scale, insert.InsertionPoint), 
-                                        insert.Rotation, 
-                                        insert.InsertionPoint) + insert.InsertionPoint;
-                                    Extends ext1 = new Extends();
-                                    ext1.AddPoint(ext.MinPoint);
-                                    ext1.AddPoint(ext.MinPoint);
-                                    extends.AddExtends(ext1);
-                                }
-                            });
-                        return extends;
+                                extends.AddExtends(ext);
+                            }
+                        });
+
+                        extends.MinPoint = MathHelper.Translate2d(extends.MinPoint, insert.InsertionPoint);
+                        extends.MaxPoint = MathHelper.Translate2d(extends.MaxPoint, insert.InsertionPoint);
+
+                        Vector3 v1, v2, v3, v4;
+                        v1 = new Vector3(extends.MinPoint.X, extends.MinPoint.Y, 0);
+                        v2 = new Vector3(extends.MinPoint.X, extends.MaxPoint.Y, 0);
+                        v3 = new Vector3(extends.MaxPoint.X, extends.MaxPoint.Y, 0);
+                        v4 = new Vector3(extends.MaxPoint.X, extends.MinPoint.Y, 0);
+
+                        double angle = insert.Rotation * MathHelper.DegToRad;
+
+                        v1 = MathHelper.Scale2d(v1, insert.Scale, insert.InsertionPoint);
+                        v1 = MathHelper.Rotation2d(v1, angle, insert.InsertionPoint);
+                        v2 = MathHelper.Scale2d(v2, insert.Scale, insert.InsertionPoint);
+                        v2 = MathHelper.Rotation2d(v2, angle, insert.InsertionPoint);
+                        v3 = MathHelper.Scale2d(v3, insert.Scale, insert.InsertionPoint);
+                        v3 = MathHelper.Rotation2d(v3, angle, insert.InsertionPoint);
+                        v4 = MathHelper.Scale2d(v4, insert.Scale, insert.InsertionPoint);
+                        v4 = MathHelper.Rotation2d(v4, angle, insert.InsertionPoint);
+
+                        Extends extends1 = new Extends();
+                        extends1.AddPoint(v1);
+                        extends1.AddPoint(v2);
+                        extends1.AddPoint(v3);
+                        extends1.AddPoint(v4);
+                        return extends1;
                     }
                     break;
                 case EntityType.Hatch:

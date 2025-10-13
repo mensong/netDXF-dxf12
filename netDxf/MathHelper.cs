@@ -377,7 +377,7 @@ namespace netDxf
 
             Vector3 newPoint = new Vector3();
             newPoint.X = pt.X * scale.X;
-            newPoint.Y = pt.X * scale.Y;
+            newPoint.Y = pt.Y * scale.Y;
             newPoint.Z = pt.Z * scale.Z;
 
             newPoint.X += basePoint.X;

@@ -52,6 +52,20 @@ namespace netDxf
             get { return this.maxPoint; }
             set { this.maxPoint = value; }
         }
+        /// <summary>
+        /// Gets the width of the bounding box (maxPoint.X - minPoint.X).
+        /// </summary>
+        public double Width
+        {
+            get { return this.maxPoint.X - this.minPoint.X; }
+        }
+        /// <summary>
+        /// Gets the depth of the bounding box (maxPoint.Z - minPoint.Z).
+        /// </summary>
+        public double Height
+        {
+            get { return this.maxPoint.Y - this.minPoint.Y; }
+        }
         #endregion
 
         #region public methods
