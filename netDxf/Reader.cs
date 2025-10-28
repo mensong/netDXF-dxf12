@@ -2097,9 +2097,11 @@ namespace netDxf
                 }
             }
 
-            //begin to read the vertex list
-            if (dxfPairInfo.Value != DxfObjectCode.Vertex)
-                throw new DxfEntityException(DxfObjectCode.Polyline, this.file, "Vertex not found in line " + this.fileLine);
+            //Comment: deal empty polyline
+            ////begin to read the vertex list
+            //if (dxfPairInfo.Value != DxfObjectCode.Vertex)
+            //    throw new DxfEntityException(DxfObjectCode.Polyline, this.file, "Vertex not found in line " + this.fileLine);
+
             while (dxfPairInfo.Value != StringCode.EndSequence)
             {
                 if (dxfPairInfo.Value == DxfObjectCode.Vertex)
