@@ -2097,7 +2097,7 @@ namespace netDxf
                 }
             }
 
-            //Comment: deal empty polyline
+            //Comment: Deal empty vertexs polyline
             ////begin to read the vertex list
             //if (dxfPairInfo.Value != DxfObjectCode.Vertex)
             //    throw new DxfEntityException(DxfObjectCode.Polyline, this.file, "Vertex not found in line " + this.fileLine);
