@@ -552,6 +552,9 @@ namespace netDxf
                 case DxfObjectCode.AttributeDefinition:
                     entity = this.ReadAttributeDefinition();
                     break;
+                case DxfObjectCode.Point:
+                    entity = this.ReadPoint();
+                    break;
                 default:
                     ReadUnknowEntity();
                     //code = this.ReadCodePair();
