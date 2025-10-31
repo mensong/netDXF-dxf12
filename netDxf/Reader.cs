@@ -281,6 +281,40 @@ namespace netDxf
                 }
                 dxfPairInfo = this.ReadCodePair();
             }
+
+            //解决先定义Insert后定义Block的问题
+            //  常规实体
+            foreach (Insert insert in this.inserts)
+            {
+                if (insert.Block.isPlaceholderBlock)
+                {//处理占位符块
+                    Block block = this.GetBlock(insert.Block.Name, false);
+                    if (block != null)
+                    {
+                        insert.Block = block;
+                    }
+                }
+            }
+            //  块内实体
+            foreach (Block block in this.blocks.Values)
+            {
+                for (int i = 0; i < block.Entities.Count; i++)
+                {
+                    Insert insert = block.Entities[i] as Insert;
+                    if (insert != null)
+                    {
+                        if (insert.Block.isPlaceholderBlock)
+                        {//处理占位符块
+                            Block b = this.GetBlock(insert.Block.Name, false);
+                            if (b != null)
+                            {
+                                insert.Block = b;
+                            }
+                        }
+                    }
+                }
+            }
+
         }
 
         #endregion
@@ -535,7 +569,8 @@ namespace netDxf
                     entity = this.ReadSolid();
                     break;
                 case DxfObjectCode.Insert:
-                    dxfPairInfo = this.ReadCodePair();
+                    entity = this.ReadInsert();
+                    //dxfPairInfo = this.ReadCodePair();
                     break;
                 case DxfObjectCode.Line:
                     entity = this.ReadLine();
@@ -977,7 +1012,11 @@ namespace netDxf
                 {
                     Debug.Assert(dxfPairInfo.Code == 0); //el código 0 indica el inicio de una nueva capa
                     TextStyle style = this.ReadTextStyle();
-                    this.textStyles.Add(style.Name, style);
+                    if (!string.IsNullOrEmpty(style.Name))
+                    {
+                        if (!this.textStyles.ContainsKey(style.Name))
+                            this.textStyles.Add(style.Name, style);
+                    }
                 }
                 else
                 {
@@ -1009,19 +1048,19 @@ namespace netDxf
                         handle = dxfPairInfo.Value;
                         break;
                     case 2:
-                        if (string.IsNullOrEmpty(dxfPairInfo.Value))
-                        {
-                            throw new DxfInvalidCodeValueEntityException(dxfPairInfo.Code, dxfPairInfo.Value, this.file,
-                                                                         "Invalid value " + dxfPairInfo.Value + " in code " + dxfPairInfo.Code + " line " + this.fileLine);
-                        }
+                        //if (string.IsNullOrEmpty(dxfPairInfo.Value))
+                        //{
+                        //    throw new DxfInvalidCodeValueEntityException(dxfPairInfo.Code, dxfPairInfo.Value, this.file,
+                        //                                                 "Invalid value " + dxfPairInfo.Value + " in code " + dxfPairInfo.Code + " line " + this.fileLine);
+                        //}
                         name = dxfPairInfo.Value;
                         break;
                     case 3:
-                        if (string.IsNullOrEmpty(dxfPairInfo.Value))
-                        {
-                            throw new DxfInvalidCodeValueEntityException(dxfPairInfo.Code, dxfPairInfo.Value, this.file,
-                                                                         "Invalid value " + dxfPairInfo.Value + " in code " + dxfPairInfo.Code + " line " + this.fileLine);
-                        }
+                        //if (string.IsNullOrEmpty(dxfPairInfo.Value))
+                        //{
+                        //    throw new DxfInvalidCodeValueEntityException(dxfPairInfo.Code, dxfPairInfo.Value, this.file,
+                        //                                                 "Invalid value " + dxfPairInfo.Value + " in code " + dxfPairInfo.Code + " line " + this.fileLine);
+                        //}
                         font = dxfPairInfo.Value;
                         break;
 
@@ -1684,7 +1723,7 @@ namespace netDxf
                         dxfPairInfo = this.ReadCodePair();
                         break;
                     case 2:
-                        block = this.GetBlock(dxfPairInfo.Value);
+                        block = this.GetBlock(dxfPairInfo.Value, true);
                         if (block == null)
                             throw new DxfEntityException(DxfObjectCode.Insert, this.file, "Block " + dxfPairInfo.Value + " not defined line " + this.fileLine);
                         dxfPairInfo = this.ReadCodePair();
@@ -2455,7 +2494,15 @@ namespace netDxf
                         break;
                     case 75:
                         // the next lines hold the information about the hatch pattern
-                        pattern = fill == FillFlag.SolidFill ? HatchPattern.Solid : ReadHatchPattern(name);
+                        if (fill == FillFlag.SolidFill)
+                        {
+                            pattern = HatchPattern.Solid;
+                            dxfPairInfo = this.ReadCodePair();
+                        }
+                        else
+                        {
+                            pattern = ReadHatchPattern(name);
+                        }
                         break;
                     case 1001:
                         XData xDataItem = this.ReadXDataRecord(dxfPairInfo.Value);
@@ -2962,7 +3009,7 @@ namespace netDxf
             return alignment;
         }
 
-        private Block GetBlock(string name)
+        private Block GetBlock(string name, bool enblePlaceholder = false)
         {
             //在MText时，由于R12版本是没有MText的，所以在保存MText到R12时会变为一个块
             //而这个块会被定义为一个隐藏块（前面加*），但是在保存后会在AutoCAD中打不开，
@@ -2974,7 +3021,13 @@ namespace netDxf
             {
                 return this.blocks[name];
             }
-            return null;
+
+            if (!enblePlaceholder)
+                return null;
+
+            //返回一个占位块，为了解决先定义Insert后定义Block的问题
+            Block placeholderBlock = new Block(name, true);
+            return placeholderBlock;
         }
 
         private Layer GetLayer(string name)

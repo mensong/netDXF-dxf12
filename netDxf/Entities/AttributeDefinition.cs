@@ -184,9 +184,12 @@ namespace netDxf.Entities
             get { return this.widthFactor; }
             set
             {
+                //if (value <= 0)
+                //    throw (new ArgumentOutOfRangeException("value", value, "The width factor should be greater than zero."));
                 if (value <= 0)
-                    throw (new ArgumentOutOfRangeException("value", value, "The width factor should be greater than zero."));
-                this.widthFactor = value;
+                    this.widthFactor = 0.01;
+                else
+                    this.widthFactor = value;
             }
         }
 

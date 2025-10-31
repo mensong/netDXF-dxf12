@@ -69,8 +69,11 @@ namespace netDxf.Tables
         public TextStyle(string name, string font)
             : base(DxfObjectCode.TextStyle)
         {
+            //if (string.IsNullOrEmpty(name))
+            //    throw (new ArgumentNullException("name"));
             if (string.IsNullOrEmpty(name))
-                throw (new ArgumentNullException("name"));
+                name = "Standard";
+
             this.name = name;
             if (string.IsNullOrEmpty(font))
                 font = "simplex";

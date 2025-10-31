@@ -1125,6 +1125,9 @@ namespace netDxf
             this.WriteCodePair(20, 0.0);
             this.WriteCodePair(30, 0.0);
 
+            //图元跟随(固定)
+            this.WriteCodePair(66, 1);
+
             //Obsolete; formerly an “entities follow flag” (optional; ignore if present)
             //but its needed to load the dxf file in AutoCAD even the documentation says it is OPTIONAL
             //this.WriteCodePair(66, "1");

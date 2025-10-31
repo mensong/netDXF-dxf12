@@ -42,7 +42,7 @@ namespace netDxf.Entities
         private AciColor color;
         private Layer layer;
         private LineType lineType;
-        private readonly Block block;
+        private Block block;
         private Vector3 insertionPoint;
         private Vector3 scale;
         private double rotation;
@@ -125,6 +125,7 @@ namespace netDxf.Entities
         public Block Block
         {
             get { return this.block; }
+            set { this.block = value; }
         }
 
         /// <summary>

@@ -44,6 +44,11 @@ namespace netDxf.Blocks
         private Dictionary<string, AttributeDefinition> attributes;
         private List<IEntityObject> entities;
 
+        /// <summary>
+        /// For internal use only. Specifies if the block is a placeholder block.
+        /// </summary>
+        public bool isPlaceholderBlock { get; set; }
+
         #endregion
 
         #region constants
@@ -66,7 +71,9 @@ namespace netDxf.Blocks
         /// Initializes a new instance of the <c>Block</c> class.
         /// </summary>
         /// <param name="name">Block name.</param>
-        public Block(string name) : base (DxfObjectCode.Block)
+        /// <param name="isPlaceholderBlock">是否是一个占位块，为了解决先定义Insert后定义Block的问题</param>
+        public Block(string name, bool isPlaceholderBlock = false) 
+            : base (DxfObjectCode.Block)
         {
             if (string.IsNullOrEmpty(name))
                 throw (new ArgumentNullException("name"));
@@ -77,7 +84,9 @@ namespace netDxf.Blocks
             this.attributes = new Dictionary<string, AttributeDefinition>();
             this.entities = new List<IEntityObject>();
             this.record = new BlockRecord(name);
-            this.end = new BlockEnd(this.layer);          
+            this.end = new BlockEnd(this.layer);
+            
+            this.isPlaceholderBlock = isPlaceholderBlock;
         }
 
         #endregion
