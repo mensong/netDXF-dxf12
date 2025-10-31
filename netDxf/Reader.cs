@@ -2224,6 +2224,7 @@ namespace netDxf
                                                     Location = new Vector2(v.Location.X, v.Location.Y),
                                                     BeginWidth = v.BeginThickness,
                                                     Bulge = v.Bulge,
+                                                    Flags = v.Flags,
                                                     Color = v.Color,
                                                     EndWidth = v.EndThickness,
                                                     Layer = v.Layer,

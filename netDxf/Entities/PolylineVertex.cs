@@ -222,6 +222,7 @@ namespace netDxf.Entities
         public VertexTypeFlags Flags
         {
             get { return this.flags; }
+            set { this.flags = value; }
         }
 
         #endregion
